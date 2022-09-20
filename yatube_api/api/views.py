@@ -55,26 +55,25 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(post=post, author=self.request.user)
 
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        if instance.author != request.user:
+        part = kwargs.pop('partial', False)
+        post = self.get_object()
+        if post.author != request.user:
             return Response(status=status.HTTP_403_FORBIDDEN)
         serializer = self.get_serializer(
-            instance,
+            post,
             data=request.data,
-            partial=partial
+            partial=part
         )
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
-        if getattr(instance, '_prefetched_objects_cache', None):
-            instance._prefetched_objects_cache = {}
-
+        if getattr(post, '_prefetched_objects_cache', None):
+            post._prefetched_objects_cache = {}
         return Response(serializer.data)
 
     def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        if instance.author != request.user:
+        post = self.get_object()
+        if post.author != request.user:
             return Response(status=status.HTTP_403_FORBIDDEN)
-        self.perform_destroy(instance)
+        self.perform_destroy(post)
         return Response(status=status.HTTP_204_NO_CONTENT)
