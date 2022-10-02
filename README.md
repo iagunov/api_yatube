@@ -10,10 +10,6 @@ API для блог платформы.
 git clone https://github.com/yagunov-test-moscow/api_yatube.git
 ```
 
-```
-cd kittygram2
-```
-
 Cоздать и активировать виртуальное окружение:
 
 ```
